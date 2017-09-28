@@ -7,12 +7,4 @@ namespace Stock.Sync.Domain.OutputEvents
     class UpdateProduct
     {
     }
-
-    class EndProduct
-    {
-    }
-
-    class StockSummary
-    {
-    }
 }

@@ -1,44 +1,27 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using stock_sync;
+using Stock.Sync.Domain.InputEvents;
 
 namespace stock.sync.SyncRules
 {
-    class StockToZero
+    class StockToZero : SyncEvent, IStockEvent
     {
-        public void Apply(ChildProduct product)
-        {
-            product.ParentProduct.IsEnded = true;
+        private readonly Product _product;
 
-            foreach (var siblings in product.ParentProduct.Children.Where(p => p != product))
-            {
-                siblings.IsEnded = true;
-            }
+        public StockToZero(Product product)
+        {
+            _product = product;
         }
-    }
 
-    class StockUpdated
-    {
-        public void Apply(Product product, int stock)
+        public void Apply()
         {
-            //product.
-        }
-    }
-
-
-    // After a product has been ended, is there any way to enable it again?
-
-    class ChildEnded
-    {
-        
-    }
-
-    class ParentEnded
-    {
-        public void Apply(ParentProduct product)
-        {
-            foreach (var child in product.Children)
+            // Thanks to this method there's no need to have access to the products repository.
+            // This only works because current structure is in memory, else we would have to update
+            // the products affected by this sync rule via the repository.
+            foreach (var otherProductInTree in _product.GetOtherTreeProducts())
             {
-                child.IsEnded = true;
+                otherProductInTree.IsEnded = true;
             }
         }
     }

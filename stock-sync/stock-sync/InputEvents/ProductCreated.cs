@@ -6,37 +6,40 @@ using Stock.Sync.Domain.Repositories;
 
 namespace Stock.Sync.Domain.InputEvents
 {
-    class ProductCreated
+    class ProductCreated : IStockEvent
     {
+        private readonly ProductsRepository _productsRepository;
+        private readonly int _id;
+        private readonly int _stock;
+        private readonly int? _parentId;
+
         public ProductCreated(ProductsRepository productsRepository, int id, int stock, int? parentId)
         {
+            _productsRepository = productsRepository;
+            _id = id;
+            _stock = stock;
+            _parentId = parentId;            
+        }
+
+        public void Apply()
+        {
             Product product;
-            if (!parentId.HasValue)
+            if (!_parentId.HasValue)
             {
-                product = new ParentProduct(id, stock);
+                product = new ParentProduct(_id, _stock);
             }
             else
             {
-                var parent = (ParentProduct) productsRepository.GetProduct(parentId.Value);
-                product = new ChildProduct(id, stock, parent);
+                var parent = (ParentProduct)_productsRepository.GetProduct(_parentId.Value);                
+                product = new ChildProduct(_id, _stock, parent);
+                parent.Children.Add((ChildProduct) product);
             }
-            productsRepository.AddProduct(product);
+            _productsRepository.AddProduct(product);
         }
-    }
 
-    class ProductUpdated
-    {
-        public ProductUpdated(ProductsRepository productsRepository, int id, int stock)
+        public IEnumerable<IStockEvent> GetSyncRules()
         {
-            productsRepository.GetProduct(id).Stock = stock;
-        }
-    }
-
-    class ProductEnded
-    {
-        public ProductEnded(ProductsRepository productsRepository, int id)
-        {
-            productsRepository.GetProduct(id).IsEnded = true;
+            yield break;
         }
     }
 }
