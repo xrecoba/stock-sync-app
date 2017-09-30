@@ -15,8 +15,6 @@ namespace Stock.Sync.Tests.Unit
             Assert.Equal(1, createdProduct.Id);
         }
 
-        
-
         [Fact]
         public void WhenChildProductCreated_NewInstanceWithParentProvidedToRepository()
         {

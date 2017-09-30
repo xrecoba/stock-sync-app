@@ -15,6 +15,12 @@ namespace Stock.Sync.Domain.Execution
                 foreach (var syncRule in stockEvent.GetSyncRules())
                 {
                     syncRule.Apply();
+                    foreach (var outputEvent in syncRule.GetOutputEvents())
+                    {
+                        outputEvent.Apply();
+                        Console.WriteLine(outputEvent);
+                        
+                    }
                 }
             }
         }

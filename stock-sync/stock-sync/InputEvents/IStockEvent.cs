@@ -6,5 +6,7 @@ namespace Stock.Sync.Domain.InputEvents
     {
         void Apply();
         IEnumerable<IStockEvent> GetSyncRules();
+
+        IEnumerable<IStockEvent> GetOutputEvents();
     }
 }

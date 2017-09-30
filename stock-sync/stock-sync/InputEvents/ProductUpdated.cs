@@ -29,5 +29,10 @@ namespace Stock.Sync.Domain.InputEvents
                 yield return new StockUpdated(GetProduct);
             }
         }
+
+        public IEnumerable<IStockEvent> GetOutputEvents()
+        {
+            yield break;
+        }
     }
 }

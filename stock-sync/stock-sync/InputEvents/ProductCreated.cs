@@ -41,5 +41,10 @@ namespace Stock.Sync.Domain.InputEvents
         {
             yield break;
         }
+
+        public IEnumerable<IStockEvent> GetOutputEvents()
+        {
+            yield break;
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using stock_sync;
+﻿using System.Collections.Generic;
+using stock_sync;
 using Stock.Sync.Domain.InputEvents;
+using Stock.Sync.Domain.OutputEvents;
 
 namespace stock.sync.SyncRules
 {
@@ -10,7 +12,7 @@ namespace stock.sync.SyncRules
 
         public ProductEnded(Product product)
         {
-            _product = product;
+            _product = product;        
         }
 
         public void Apply()
@@ -19,7 +21,7 @@ namespace stock.sync.SyncRules
             {
                 foreach (var child in _product.GetOtherTreeProducts())
                 {
-                    child.IsEnded = true;
+                    OutputEvents.Add(new EndProduct(child));
                 }
             }
         }

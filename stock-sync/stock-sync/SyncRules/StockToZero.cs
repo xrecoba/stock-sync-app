@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using stock_sync;
 using Stock.Sync.Domain.InputEvents;
+using Stock.Sync.Domain.OutputEvents;
 
 namespace stock.sync.SyncRules
 {
@@ -21,8 +23,8 @@ namespace stock.sync.SyncRules
             // the products affected by this sync rule via the repository.
             foreach (var otherProductInTree in _product.GetOtherTreeProducts())
             {
-                otherProductInTree.IsEnded = true;
+                OutputEvents.Add(new EndProduct(otherProductInTree));
             }
-        }
+        }        
     }
 }

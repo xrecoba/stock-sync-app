@@ -9,9 +9,21 @@ namespace stock.sync.SyncRules
     /// </summary>
     internal class SyncEvent
     {
+        protected readonly List<IStockEvent> OutputEvents;
+
+        public SyncEvent()
+        {
+            OutputEvents = new List<IStockEvent>();
+        }
+
         public IEnumerable<IStockEvent> GetSyncRules()
         {
             yield break;
+        }
+
+        public IEnumerable<IStockEvent> GetOutputEvents()
+        {
+            return OutputEvents;
         }
     }
 }
