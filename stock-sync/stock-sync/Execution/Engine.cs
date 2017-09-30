@@ -19,7 +19,6 @@ namespace Stock.Sync.Domain.Execution
                     {
                         outputEvent.Apply();
                         Console.WriteLine(outputEvent);
-                        
                     }
                 }
             }

@@ -1,0 +1,13 @@
+﻿{'type': 'ProductCreated', 'id': 1,'stock': 10, 'timestamp': 123, 'parent_id': 'None' }
+{'type': 'ProductCreated', 'id': 2, 'stock': 10, 'timestamp': 124, 'parent_id': 1}
+{'type': 'ProductCreated', 'id': 3, 'stock': 10, 'timestamp': 125, 'parent_id': 1}
+{'type': 'ProductUpdated', 'id': 1, 'timestamp': 126, 'stock': 9}
+{'type': 'ProductUpdated', 'id': 1, 'timestamp': 127, 'stock': 8}
+{'type': 'ProductUpdated', 'id': 1, 'timestamp': 129, 'stock': 20}
+{'type': 'IncorrectEventType', 'id': 1, 'timestamp': 130, 'stock': 20} // incorrect event
+{'type': 'ProductUpdated', 'id': 1, 'timestamp': 131} // incorrect event
+{'type': 'ProductUpdated', 'id': 4, 'timestamp': 132, 'stock': 20} //event for not existing item
+{'type': 'ProductUpdated', 'id': 1, 'timestamp': 128, 'stock': 7}
+{'type': 'ProductUpdated', 'id': 3, 'timestamp': 134, 'stock': 19}
+{'type': 'ProductEnded', 'id': 2, 'timestamp': 135}
+{'type': 'ProductUpdated', 'id': 3, 'timestamp': 136, 'stock': 0}
