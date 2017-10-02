@@ -6,20 +6,25 @@ using stock_sync;
 
 namespace Stock.Sync.Domain.OutputEvents
 {
-    class UpdateProduct : BaseOutputEvent, IStockEvent
+    class UpdateProduct : BaseOutputEvent
     {
-        private readonly Product _otherProductInTree;
+        private readonly Product _product;
         private readonly int _newStock;
 
-        public UpdateProduct(Product otherProductInTree, int newStock)
+        public UpdateProduct(Product product, int newStock)
         {
-            this._otherProductInTree = otherProductInTree;
-            this._newStock = newStock;
+            _product = product;
+            _newStock = newStock;
         }
 
-        public void Apply()
+        public override void Apply()
         {
-            _otherProductInTree.Stock = _newStock;
+            _product.Stock = _newStock;
+        }
+
+        internal override string ToJson()
+        {
+            return $"{{\'type\': \'UpdateProduct\', \'id\': {_product.Id}, \'stock\': {_product.Stock}}}";
         }
     }
 }

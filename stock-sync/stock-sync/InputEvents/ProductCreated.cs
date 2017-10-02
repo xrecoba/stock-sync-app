@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using stock_sync;
+using Stock.Sync.Domain.OutputEvents;
 using Stock.Sync.Domain.Repositories;
 
 namespace Stock.Sync.Domain.InputEvents
 {
-    class ProductCreated : IStockEvent
+    [DebuggerDisplay("Product created: id-{Id} stock-{_stock} parent-{_parentId} ")]
+    class ProductCreated : BaseStockEvent, IStockEvent
     {
-        private readonly ProductsRepository _productsRepository;
-        private readonly int _id;
         private readonly int _stock;
         private readonly int? _parentId;
 
-        public ProductCreated(ProductsRepository productsRepository, int id, int stock, int? parentId)
+        public ProductCreated(ProductsRepository productsRepository, int id, int stock, int? parentId) : base (productsRepository, id)
         {
-            _productsRepository = productsRepository;
-            _id = id;
             _stock = stock;
             _parentId = parentId;            
         }
@@ -26,15 +25,22 @@ namespace Stock.Sync.Domain.InputEvents
             Product product;
             if (!_parentId.HasValue)
             {
-                product = new ParentProduct(_id, _stock);
+                product = new ParentProduct(Id, _stock);
             }
             else
             {
-                var parent = (ParentProduct)_productsRepository.GetProduct(_parentId.Value);                
-                product = new ChildProduct(_id, _stock, parent);
-                parent.Children.Add((ChildProduct) product);
+                var parent = (ParentProduct)ProductsRepository.GetProduct(_parentId.Value);
+                if (parent == null)
+                {
+                    throw new ArgumentException($"Unexisting parentId {_parentId}");
+                }
+                else
+                {
+                    product = new ChildProduct(Id, _stock, parent);
+                    parent.Children.Add((ChildProduct) product);
+                }
             }
-            _productsRepository.AddProduct(product);
+            ProductsRepository.AddProduct(product);
         }
 
         public IEnumerable<IStockEvent> GetSyncRules()
@@ -42,7 +48,7 @@ namespace Stock.Sync.Domain.InputEvents
             yield break;
         }
 
-        public IEnumerable<IStockEvent> GetOutputEvents()
+        public IEnumerable<BaseOutputEvent> GetOutputEvents()
         {
             yield break;
         }

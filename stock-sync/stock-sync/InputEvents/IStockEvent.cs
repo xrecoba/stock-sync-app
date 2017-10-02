@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Stock.Sync.Domain.OutputEvents;
 
 namespace Stock.Sync.Domain.InputEvents
 {
@@ -7,6 +8,6 @@ namespace Stock.Sync.Domain.InputEvents
         void Apply();
         IEnumerable<IStockEvent> GetSyncRules();
 
-        IEnumerable<IStockEvent> GetOutputEvents();
+        IEnumerable<BaseOutputEvent> GetOutputEvents();
     }
 }

@@ -24,5 +24,10 @@ namespace Stock.Sync.Domain.Repositories
         {
             return _products.FirstOrDefault(p => p.Id == id);
         }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return _products;
+        }
     }
 }

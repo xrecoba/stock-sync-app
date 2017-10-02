@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using stock.sync.SyncRules;
+using Stock.Sync.Domain.OutputEvents;
 using Stock.Sync.Domain.Repositories;
 
 namespace Stock.Sync.Domain.InputEvents
 {
+    [DebuggerDisplay("Product updated: id-{Id} stock-{_stock}")]
     class ProductUpdated : BaseStockEvent, IStockEvent
     {
         private readonly int _stock;
@@ -15,7 +19,12 @@ namespace Stock.Sync.Domain.InputEvents
 
         public void Apply()
         {
-            GetProduct.Stock = _stock;
+            var product = GetProduct;
+            if (product == null)
+            {
+                throw new ArgumentException($"Unexisting product {Id}");
+            }
+            product.Stock = _stock;
         }
 
         public IEnumerable<IStockEvent> GetSyncRules()
@@ -30,7 +39,7 @@ namespace Stock.Sync.Domain.InputEvents
             }
         }
 
-        public IEnumerable<IStockEvent> GetOutputEvents()
+        public IEnumerable<BaseOutputEvent> GetOutputEvents()
         {
             yield break;
         }

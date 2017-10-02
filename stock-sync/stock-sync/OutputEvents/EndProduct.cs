@@ -3,7 +3,7 @@ using Stock.Sync.Domain.InputEvents;
 
 namespace Stock.Sync.Domain.OutputEvents
 {
-    class EndProduct : BaseOutputEvent, IStockEvent
+    class EndProduct : BaseOutputEvent
     {
         private readonly Product _product;
 
@@ -12,9 +12,14 @@ namespace Stock.Sync.Domain.OutputEvents
             _product = product;
         }
 
-        public void Apply()
+        public override void Apply()
         {
             _product.IsEnded = true;
+        }
+
+        internal override string ToJson()
+        {
+            return $"{{\'type\': \'EndProduct\', \'id\': {_product.Id}}}";
         }
     }
 }

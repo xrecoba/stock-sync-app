@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Stock.Sync.Domain.InputEvents;
+using Stock.Sync.Domain.OutputEvents;
 
 namespace stock.sync.SyncRules
 {
@@ -9,11 +10,11 @@ namespace stock.sync.SyncRules
     /// </summary>
     internal class SyncEvent
     {
-        protected readonly List<IStockEvent> OutputEvents;
+        protected readonly List<BaseOutputEvent> OutputEvents;
 
         public SyncEvent()
         {
-            OutputEvents = new List<IStockEvent>();
+            OutputEvents = new List<BaseOutputEvent>();
         }
 
         public IEnumerable<IStockEvent> GetSyncRules()
@@ -21,7 +22,7 @@ namespace stock.sync.SyncRules
             yield break;
         }
 
-        public IEnumerable<IStockEvent> GetOutputEvents()
+        public IEnumerable<BaseOutputEvent> GetOutputEvents()
         {
             return OutputEvents;
         }
