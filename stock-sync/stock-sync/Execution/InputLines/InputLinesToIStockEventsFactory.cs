@@ -46,7 +46,7 @@ namespace Stock.Sync.Domain.Execution
                         lineToStockEventAdapter = _productEndedToStockLineReader;
                         break;
                     default:
-                        _logger.LogMessage($"Unknown action type {inputLine.type}");
+                        // thanks to parameter validation this will never be reached.                        
                         break;
                 }
                 if (lineToStockEventAdapter != null)
@@ -60,12 +60,7 @@ namespace Stock.Sync.Domain.Execution
                         Console.WriteLine(e);
                     }
                 }
-            }
-
-            // This addition should not be done here, it should be done in the engine instead but then we need a reference
-            // to the products repository in the index. This would be fixed by using IOC and making the product repository 
-            // a singleton accessible to everyone.
-            inputEvents.Add(new OutputEvents.StockSummary(_productsRepository));
+            }            
             return inputEvents;
         }
 

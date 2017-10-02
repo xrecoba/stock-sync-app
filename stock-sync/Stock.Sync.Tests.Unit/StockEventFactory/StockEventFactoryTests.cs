@@ -54,7 +54,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            _engine.Run(events);
+            _engine.Run(productsRepository, events);
 
             Assert.Equal(events.Count(), 1);
             Assert.Equal(20, productsRepository.GetProduct(_parentId).Stock);
@@ -72,7 +72,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            _engine.Run(events);
+             _engine.Run(productsRepository, events);
 
             Assert.Equal(15, productsRepository.GetProduct(_childId).Stock);            
         }
@@ -89,7 +89,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            Assert.Throws<ArgumentException>(() => _engine.Run(events));
+            Assert.Throws<ArgumentException>(() => _engine.Run(productsRepository, events));
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            _engine.Run(events);
+             _engine.Run(productsRepository, events);
 
             Assert.Equal(99, productsRepository.GetProduct(_parentId).Stock);
         }
@@ -120,7 +120,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            Assert.Throws<ArgumentException>(() => _engine.Run(events));
+            Assert.Throws<ArgumentException>(() => _engine.Run(productsRepository, events));
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            Assert.Throws<ArgumentException>(() => _engine.Run(events));
+            Assert.Throws<ArgumentException>(() => _engine.Run(productsRepository, events));
         }
 
         [Fact]
@@ -149,7 +149,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
 
             };
             var events = stockEventFactory.GetInputEvents(lines);
-            _engine.Run(events);
+             _engine.Run(productsRepository, events);
 
             Assert.Equal(true, productsRepository.GetProduct(_parentId).IsEnded);
         }

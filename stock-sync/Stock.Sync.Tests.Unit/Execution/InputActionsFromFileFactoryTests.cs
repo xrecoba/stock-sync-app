@@ -13,11 +13,12 @@ namespace Stock.Sync.Tests.Unit.Execution
         public void SampleWithExampleInputFile()
         {
             var lines = new InputLinesFromFileReader().ReadLines();
-            var stockEventsFactory = new InputLinesToIStockEventsFactory(new ProductsRepository(), new ConsoleLogger());
+            var productsRepository = new ProductsRepository();
+            var stockEventsFactory = new InputLinesToIStockEventsFactory(productsRepository, new ConsoleLogger());
             var stockEvents = stockEventsFactory.GetInputEvents(lines);
 
             var engine = new Engine();
-            engine.Run(stockEvents);
+            engine.Run(productsRepository, stockEvents);
         }
     }
 }

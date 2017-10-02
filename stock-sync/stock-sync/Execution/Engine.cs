@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Stock.Sync.Domain.InputEvents;
+using Stock.Sync.Domain.OutputEvents;
+using Stock.Sync.Domain.Repositories;
 
 namespace Stock.Sync.Domain.Execution
 {
@@ -9,34 +11,41 @@ namespace Stock.Sync.Domain.Execution
     {
         ILogger _logger = new ConsoleLogger(); 
 
-        public void Run(IEnumerable<IStockEvent> events)
+        public void Run(ProductsRepository productsRepository, IEnumerable<IStockEvent> events)
         {
             foreach (var stockEvent in events)
             {
-                TryExecute(stockEvent);
 
-                foreach (var syncRule in stockEvent.GetSyncRules())
+                if (TryExecute(stockEvent))
                 {
-                    TryExecute(syncRule);
-
-                    foreach (var outputEvent in syncRule.GetOutputEvents())
+                    foreach (var syncRule in stockEvent.GetSyncRules())
                     {
-                        TryExecute(outputEvent);
-                        Console.WriteLine(outputEvent.ToJson());
-                    }
+                        if (TryExecute(syncRule))
+                        {
+                            foreach (var outputEvent in syncRule.GetOutputEvents())
+                            {
+                                TryExecute(outputEvent);
+                                Console.WriteLine(outputEvent.ToJson());
+                            } 
+                        }
+                    } 
                 }
             }
+
+            Console.WriteLine(new StockSummary(productsRepository).ToJson());
         }
 
-        private void TryExecute(IStockEvent stockEvent)
+        private bool TryExecute(IStockEvent stockEvent)
         {
             try
             {
                 stockEvent.Apply();
+                return true;
             }
             catch (Exception e)
             {
                 _logger.LogMessage(e.Message);
+                return false;
             }
         }
     }

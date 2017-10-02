@@ -28,7 +28,7 @@ namespace Stock.Sync.Tests.Unit.ExampleScenario
             var repo = GetDemoProductsRepo();
 
             var executionEngine = new Engine();
-            executionEngine.Run(new List<IStockEvent> { new ProductUpdated(repo, ParentId, 9) });
+            executionEngine.Run(repo, new List<IStockEvent> { new ProductUpdated(repo, ParentId, 9) });
 
             Assert.Equal(9, repo.GetProduct(Child1Id).Stock);
             Assert.Equal(9, repo.GetProduct(Child2Id).Stock);
@@ -40,7 +40,7 @@ namespace Stock.Sync.Tests.Unit.ExampleScenario
             var repo = GetDemoProductsRepo();
 
             var executionEngine = new Engine();
-            executionEngine.Run(new List<IStockEvent> { new ProductUpdated(repo, Child1Id, 0) });
+            executionEngine.Run(repo, new List<IStockEvent> { new ProductUpdated(repo, Child1Id, 0) });
 
             Assert.Equal(true, repo.GetProduct(ParentId).IsEnded);
             Assert.Equal(true, repo.GetProduct(Child2Id).IsEnded);
@@ -52,7 +52,7 @@ namespace Stock.Sync.Tests.Unit.ExampleScenario
             var repo = GetDemoProductsRepo();
 
             var executionEngine = new Engine();
-            executionEngine.Run(new List<IStockEvent> { new ProductEnded(repo, ParentId) });
+            executionEngine.Run(repo, new List<IStockEvent> { new ProductEnded(repo, ParentId) });
 
             Assert.Equal(true, repo.GetProduct(Child1Id).IsEnded);
             Assert.Equal(true, repo.GetProduct(Child2Id).IsEnded);
