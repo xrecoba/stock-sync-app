@@ -60,9 +60,9 @@ namespace Stock.Sync.Domain.Execution
                         Console.WriteLine(e);
                     }
                 }
-            }            
-            return inputEvents;
-        }
+            }
 
+            return inputEvents;
+        }        
     }
 }
