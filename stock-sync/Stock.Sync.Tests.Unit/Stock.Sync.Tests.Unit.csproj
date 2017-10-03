@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\stock-sync\Stock.Sync.Domain.csproj" />
+    <ProjectReference Include="..\Stock.Sync.Domain\Stock.Sync.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

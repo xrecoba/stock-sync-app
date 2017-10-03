@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stock.Sync.Domain", "stock-sync\Stock.Sync.Domain.csproj", "{397502CE-A683-4753-95B0-9D18653EF6C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stock.Sync.Domain", "Stock.Sync.Domain\Stock.Sync.Domain.csproj", "{397502CE-A683-4753-95B0-9D18653EF6C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stock.Sync.Tests.Unit", "Stock.Sync.Tests.Unit\Stock.Sync.Tests.Unit.csproj", "{6690EC7F-BDAA-4656-85EE-C32538F3590C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Sync.App", "ConsoleApp1\Stock.Sync.App.csproj", "{BA051279-0DB6-4005-B8E9-A25A8F3DDE93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Sync.App", "Stock.Sync.App\Stock.Sync.App.csproj", "{BA051279-0DB6-4005-B8E9-A25A8F3DDE93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,7 +17,6 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         private static int _parentId = 10;
         private static int _childId = 2;
 
-        private ConsoleLogger _consoleLogger = new ConsoleLogger();
         private Engine _engine = new Engine();
         private InputLine _createParent = new InputLine(Constants.ProductCreated, _parentId, 20, 140, "None");
         private InputLine _createChild = new InputLine(Constants.ProductCreated, _childId, 15, 140, _parentId.ToString());
@@ -25,22 +24,24 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         // Skip the tests to check if a field is missing as the library to read the json is already taking care of it.
 
         [Fact]
-        public void WithInvalidOperationType_ErrorIsLogged()
+        public void WithInvalidOperationType_ErrorIsIgnored()
         {
             var productsRepository = new ProductsRepository();
 
             Mock<ILogger> moq = new Mock<ILogger>();
             var invalidType = "invalid";
 
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
+            Mock<ILogger> errors = new Mock<ILogger>();
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, errors.Object);
             var lines = new List<InputLine>
             {
                 new InputLine(invalidType, 1, 1, 1, "whatever")
             };
 
-            stockEventFactory.GetInputEvents(lines);
+            var input = stockEventFactory.GetInputEvents(lines);
 
-            moq.Verify(l => l.LogMessage($"Unknown action type {invalidType}"), Times.Once);
+            Assert.Equal(0 , input.Count());
+            errors.Verify(l => l.LogMessage($"Unknown action type {invalidType}"), Times.Never);
         }
 
         [Fact]
@@ -72,9 +73,9 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-             _engine.Run(productsRepository, events);
+            _engine.Run(productsRepository, events);
 
-            Assert.Equal(15, productsRepository.GetProduct(_childId).Stock);            
+            Assert.Equal(15, productsRepository.GetProduct(_childId).Stock);
         }
 
 
@@ -89,7 +90,13 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            Assert.Throws<ArgumentException>(() => _engine.Run(productsRepository, events));
+            Mock<ILogger> errors = new Mock<ILogger>();
+            Mock<ILogger> output = new Mock<ILogger>();
+
+            var engine = new Engine(errors.Object, output.Object);
+            engine.Run(productsRepository, events);
+
+            errors.Verify(l => l.LogMessage($"Unexisting parentId {_parentId}"), Times.Once);
         }
 
         [Fact]
@@ -100,11 +107,11 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             var lines = new List<InputLine>
             {
                 _createParent,
-                new InputLine(Constants.ProductUpdated, _parentId, 99, 0, "")                
+                new InputLine(Constants.ProductUpdated, _parentId, 99, 0, "")
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-             _engine.Run(productsRepository, events);
+            _engine.Run(productsRepository, events);
 
             Assert.Equal(99, productsRepository.GetProduct(_parentId).Stock);
         }
@@ -120,7 +127,13 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            Assert.Throws<ArgumentException>(() => _engine.Run(productsRepository, events));
+            Mock<ILogger> errors = new Mock<ILogger>();
+            Mock<ILogger> output = new Mock<ILogger>();
+
+            var engine = new Engine(errors.Object, output.Object);
+            engine.Run(productsRepository, events);
+
+            errors.Verify(l => l.LogMessage($"Unexisting product {_parentId}"), Times.Once);
         }
 
         [Fact]
@@ -134,7 +147,13 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             };
             var events = stockEventFactory.GetInputEvents(lines);
 
-            Assert.Throws<ArgumentException>(() => _engine.Run(productsRepository, events));
+            Mock<ILogger> errors = new Mock<ILogger>();
+            Mock<ILogger> output = new Mock<ILogger>();
+
+            var engine = new Engine(errors.Object, output.Object);
+            engine.Run(productsRepository, events);
+
+            errors.Verify(l => l.LogMessage($"Unexisting product {_parentId}"), Times.Once);
         }
 
         [Fact]
@@ -149,7 +168,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
 
             };
             var events = stockEventFactory.GetInputEvents(lines);
-             _engine.Run(productsRepository, events);
+            _engine.Run(productsRepository, events);
 
             Assert.Equal(true, productsRepository.GetProduct(_parentId).IsEnded);
         }

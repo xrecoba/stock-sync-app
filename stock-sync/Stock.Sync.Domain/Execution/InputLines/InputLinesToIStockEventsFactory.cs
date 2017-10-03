@@ -9,19 +9,25 @@ namespace Stock.Sync.Domain.Execution
     public class InputLinesToIStockEventsFactory
     {
         private readonly ProductsRepository _productsRepository;
+        private readonly ILogger _logger;
         private readonly ProductCreatedInputLineToStockLineReader _productCreatedToStockLineReader;
         private readonly ProductUpdatedInputLineToStockLineReader _productUpdatedToStockLineReader;
         private readonly ProductEndedInputLineToStockLineReader _productEndedToStockLineReader;
 
-        public InputLinesToIStockEventsFactory(ProductsRepository productsRepository)
+        public InputLinesToIStockEventsFactory(ProductsRepository productsRepository) : this(productsRepository,
+            new ConsoleLogger())
+        {
+        }
+
+        public InputLinesToIStockEventsFactory(ProductsRepository productsRepository, ILogger logger)
         {
             _productsRepository = productsRepository;
+            _logger = logger;
 
             _productCreatedToStockLineReader = new ProductCreatedInputLineToStockLineReader();
             _productUpdatedToStockLineReader = new ProductUpdatedInputLineToStockLineReader();
             _productEndedToStockLineReader = new ProductEndedInputLineToStockLineReader();
         }
-
 
         public IEnumerable<IStockEvent> GetInputEvents(IEnumerable<InputLine> lines)
         {
@@ -55,7 +61,7 @@ namespace Stock.Sync.Domain.Execution
                     }
                     catch (ArgumentException e)
                     {
-                        Console.WriteLine(e);
+                        _logger.LogMessage(e.Message);
                     }
                 }
             }
