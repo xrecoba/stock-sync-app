@@ -12,9 +12,9 @@ namespace Stock.Sync.Tests.Unit.Execution
         [Fact]
         public void SampleWithExampleInputFile()
         {
-            var lines = new InputLinesFromFileReader().ReadLines();
+            var lines = new InputLinesFromFileReader(new ConsoleLogger()).ReadLines(@"inputFile.json");
             var productsRepository = new ProductsRepository();
-            var stockEventsFactory = new InputLinesToIStockEventsFactory(productsRepository, new ConsoleLogger());
+            var stockEventsFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var stockEvents = stockEventsFactory.GetInputEvents(lines);
 
             var engine = new Engine();

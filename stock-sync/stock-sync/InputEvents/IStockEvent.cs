@@ -3,7 +3,7 @@ using Stock.Sync.Domain.OutputEvents;
 
 namespace Stock.Sync.Domain.InputEvents
 {
-    interface IStockEvent
+    public interface IStockEvent
     {
         void Apply();
         

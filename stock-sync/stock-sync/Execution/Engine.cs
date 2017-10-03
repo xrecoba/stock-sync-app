@@ -9,10 +9,19 @@ using Stock.Sync.Domain.Repositories;
 
 namespace Stock.Sync.Domain.Execution
 {
-    internal class Engine
+    public class Engine
     {
-        ILogger _logger = new ConsoleLogger();
-        private int _currentTimestamp;
+        readonly ILogger _errorsLogger;
+        readonly ILogger _outputLogger;
+
+
+        public Engine() :  this(new ConsoleLogger(), new ConsoleLogger()) { }
+
+        public Engine(ILogger errorsLogger, ILogger outputLogger)
+        {
+            _errorsLogger = errorsLogger;
+            _outputLogger = outputLogger;
+        }
 
         public void Run(ProductsRepository productsRepository, IEnumerable<IStockEvent> events)
         {
@@ -27,14 +36,14 @@ namespace Stock.Sync.Domain.Execution
                             foreach (var outputEvent in syncRule.GetOutputEvents())
                             {
                                 TryExecute(outputEvent);
-                                Console.WriteLine(outputEvent.ToJson());
+                                _outputLogger.LogMessage(outputEvent.ToJson());
                             } 
                         }
                     } 
                 }
             }
 
-            Console.WriteLine(new StockSummary(productsRepository).ToJson());
+            _outputLogger.LogMessage(new StockSummary(productsRepository).ToJson());
         }
 
         private bool TryExecute(IStockEvent stockEvent)
@@ -46,7 +55,7 @@ namespace Stock.Sync.Domain.Execution
             }
             catch (Exception e)
             {
-                _logger.LogMessage(e.Message);
+                _errorsLogger.LogMessage(e.Message);
                 return false;
             }
         }

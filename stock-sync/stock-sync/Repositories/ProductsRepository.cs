@@ -6,7 +6,7 @@ using stock_sync;
 
 namespace Stock.Sync.Domain.Repositories
 {
-    internal class ProductsRepository
+    public class ProductsRepository
     {
         private readonly IList<Product> _products;
 

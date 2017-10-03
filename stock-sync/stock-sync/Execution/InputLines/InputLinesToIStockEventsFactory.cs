@@ -6,18 +6,16 @@ using Stock.Sync.Domain.Repositories;
 
 namespace Stock.Sync.Domain.Execution
 {
-    class InputLinesToIStockEventsFactory
+    public class InputLinesToIStockEventsFactory
     {
         private readonly ProductsRepository _productsRepository;
-        private readonly ILogger _logger;
         private readonly ProductCreatedInputLineToStockLineReader _productCreatedToStockLineReader;
         private readonly ProductUpdatedInputLineToStockLineReader _productUpdatedToStockLineReader;
         private readonly ProductEndedInputLineToStockLineReader _productEndedToStockLineReader;
 
-        public InputLinesToIStockEventsFactory(ProductsRepository productsRepository, ILogger logger)
+        public InputLinesToIStockEventsFactory(ProductsRepository productsRepository)
         {
             _productsRepository = productsRepository;
-            _logger = logger;
 
             _productCreatedToStockLineReader = new ProductCreatedInputLineToStockLineReader();
             _productUpdatedToStockLineReader = new ProductUpdatedInputLineToStockLineReader();

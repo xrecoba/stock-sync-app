@@ -32,7 +32,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
             Mock<ILogger> moq = new Mock<ILogger>();
             var invalidType = "invalid";
 
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, moq.Object);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 new InputLine(invalidType, 1, 1, 1, "whatever")
@@ -47,7 +47,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void WithRightData_CanCreateParentItem()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 _createParent
@@ -64,7 +64,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void WithRightData_CanCreateChildItem()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 _createParent,
@@ -82,7 +82,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void WithNoParent_FailsToCreateChildItem()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 _createChild
@@ -96,7 +96,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void AfterAddingItem_StockCanBeUpdated()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 _createParent,
@@ -113,7 +113,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void UpdatingUnexistingItem_ThrowsException()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 new InputLine(Constants.ProductUpdated, _parentId, 99, 0, "")
@@ -127,7 +127,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void EndingUnexistingItem_ThrowsException()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 new InputLine(Constants.ProductEnded, _parentId, 99, 0, "")
@@ -141,7 +141,7 @@ namespace Stock.Sync.Tests.Unit.StockEventFactory
         public void AfterAddingItem_ItCanBeEnded()
         {
             var productsRepository = new ProductsRepository();
-            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository, _consoleLogger);
+            var stockEventFactory = new InputLinesToIStockEventsFactory(productsRepository);
             var lines = new List<InputLine>
             {
                 _createParent,

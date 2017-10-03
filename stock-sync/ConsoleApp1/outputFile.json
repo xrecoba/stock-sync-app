@@ -1,0 +1,11 @@
+{'type': 'UpdateProduct', 'id': 2, 'stock': 9}
+{'type': 'UpdateProduct', 'id': 3, 'stock': 9}
+{'type': 'UpdateProduct', 'id': 2, 'stock': 8}
+{'type': 'UpdateProduct', 'id': 3, 'stock': 8}
+{'type': 'UpdateProduct', 'id': 2, 'stock': 20}
+{'type': 'UpdateProduct', 'id': 3, 'stock': 20}
+{'type': 'UpdateProduct', 'id': 1, 'stock': 19}
+{'type': 'UpdateProduct', 'id': 2, 'stock': 19}
+{'type': 'EndProduct', 'id': 1}
+{'type': 'EndProduct', 'id': 2}
+{'type': 'StockSummary', 'stocks': {''1': 19, '2': 19, '3': 0}}

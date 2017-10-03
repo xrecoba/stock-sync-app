@@ -7,14 +7,19 @@ namespace Stock.Sync.Domain.Execution
 {
     public class InputLinesFromFileReader
     {
-        ILogger _logger = new ConsoleLogger();
+        private ILogger _logger;
         int _lastArrivalTimestamp = Int32.MinValue;
 
-        public IEnumerable<InputLine> ReadLines()
+        public InputLinesFromFileReader(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        public IEnumerable<InputLine> ReadLines(string inputfileJson)
         {
             var aggregatedLines = new List<InputLine>();
 
-            foreach (var line in File.ReadLines(@"inputFile.json"))
+            foreach (var line in File.ReadLines(inputfileJson))
             {
                 InputLine input = JsonConvert.DeserializeObject<InputLine>(line);
 

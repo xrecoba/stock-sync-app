@@ -1,0 +1,4 @@
+Ignoring line because type is not known or at least one parameter is missing: {'type': 'IncorrectEventType', 'id': 1, 'timestamp': 130, 'stock': 20} // incorrect event
+Ignoring line because type is not known or at least one parameter is missing: {'type': 'ProductUpdated', 'id': 1, 'timestamp': 131} // incorrect event
+Ignoring line as it is a late arrival: {'type': 'ProductUpdated', 'id': 1, 'timestamp': 128, 'stock': 7}
+Unexisting product 4

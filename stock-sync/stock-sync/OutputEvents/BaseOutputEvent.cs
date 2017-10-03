@@ -4,7 +4,7 @@ using Stock.Sync.Domain.InputEvents;
 namespace Stock.Sync.Domain.OutputEvents
 {
     // output events are by definition end of the road.
-    internal abstract class BaseOutputEvent : IStockEvent
+    public abstract class BaseOutputEvent : IStockEvent
     {
         public abstract void Apply();
 
